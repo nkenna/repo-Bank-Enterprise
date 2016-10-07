@@ -1,0 +1,176 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.delete;
+
+import com.ejb.entity.Customer;
+import com.ejb.remoteInterface.CustomerRemote;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Properties;
+import java.util.ResourceBundle;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javax.imageio.ImageIO;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+/**
+ * FXML Controller class
+ *
+ * @author STEINACOZ-PC
+ */
+public class DeleteAcctFxmlController implements Initializable {
+
+    @FXML
+    private Button deleteButton;
+    @FXML
+    private ImageView imgView;
+    @FXML
+    private TextField searchTextField;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Label deleteFirstName;
+    @FXML
+    private Label deleteMiddle;
+    @FXML
+    private Label deleteLast;
+    @FXML
+    private Label deleteSex;
+    @FXML
+    private Label deleteEmail;
+    @FXML
+    private Label deletePhone;
+    @FXML
+    private Label deleteCountry;
+    @FXML
+    private Label deleteType;
+    @FXML
+    private Label deleteDod;
+    @FXML
+    private TextArea deleteAddress;
+    
+     Properties props;
+    InitialContext ctx = null;
+     CustomerRemote customerBean;
+    @FXML
+    private Label alertLabel;
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+
+    @FXML
+    private void deleteAcctButton(ActionEvent event) {
+         try{
+            props = new Properties();
+            props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
+            props.put(Context.PROVIDER_URL, "http-remoting://localhost:8050");
+            props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+            props.put(Context.SECURITY_PRINCIPAL, "steinacoz");
+            props.put(Context.SECURITY_CREDENTIALS, "nkenna007");
+            props.put("jboss.naming.client.ejb.context", true);
+           
+            ctx = new InitialContext(props);
+            
+             
+ customerBean = (CustomerRemote) ctx.lookup("Banker_Enterprise-ejb/CustomerSessionBean!com.ejb.remoteInterface.CustomerRemote");
+     
+        }catch(NamingException ex){
+            ex.printStackTrace();
+          
+        } 
+        
+        
+        Customer customer = new Customer();
+      
+customerBean.deleteAcct(customer, searchTextField.getText());
+alertLabel.setText("Customer with Account Number " + searchTextField.getText() + " have been deleted");
+    }
+
+    @FXML
+    private void searchAcctField(ActionEvent event) {
+         
+    }
+
+    @FXML
+    private void searchAcctButton(ActionEvent event) {
+        try{
+            props = new Properties();
+            props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
+            props.put(Context.PROVIDER_URL, "http-remoting://localhost:8050");
+            props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+            props.put(Context.SECURITY_PRINCIPAL, "steinacoz");
+            props.put(Context.SECURITY_CREDENTIALS, "nkenna007");
+            props.put("jboss.naming.client.ejb.context", true);
+           
+            ctx = new InitialContext(props);
+            
+             
+ customerBean = (CustomerRemote) ctx.lookup("Banker_Enterprise-ejb/CustomerSessionBean!com.ejb.remoteInterface.CustomerRemote");
+     
+        }catch(NamingException ex){
+            ex.printStackTrace();
+          
+        }
+      
+        
+        String getAccNum = searchTextField.getText();
+        
+        
+        Customer customer = new Customer();
+        
+        customerBean.searchByAcct(customer, getAccNum);
+     
+        
+        
+         this.deleteFirstName.setText(customerBean.getFirstN());
+         this.deleteMiddle.setText(customerBean.getMiddleN());
+         this.deleteLast.setText(customerBean.getLastN());
+         this.deleteAddress.setText(customerBean.getAD());
+         this.deleteCountry.setText(customerBean.getNA());
+         this.deleteDod.setText(customerBean.getD().toString());
+         this.deleteEmail.setText(customerBean.getEM());
+         this.deleteType.setText(customerBean.getTY());
+         this.deletePhone.setText(customerBean.getPH());
+         this.deleteSex.setText(customerBean.getGender());
+         
+        BufferedImage bi = null;
+      try{
+        
+          // byte[] by = new sun.misc.BASE64Decoder().decodeBuffer(customerBean.getStringIM());
+          byte[] by = javax.xml.bind.DatatypeConverter.parseHexBinary(customerBean.getStringIM());
+           ByteArrayInputStream in = new ByteArrayInputStream(by);
+          
+           bi = ImageIO.read(in);
+          
+          in.close();
+      }catch(IOException e){
+           e.getMessage();
+       }
+         Image im = SwingFXUtils.toFXImage(bi, null);
+        // imv.setImage(im);
+        imgView.setImage(im);
+    }
+    
+}
