@@ -48,6 +48,7 @@ public interface CustomerRemote {
     
     byte[] imageToByte(File f);
     void byteToImage(byte[] b);
+    double getBal();
     String getFirstN();
     String getMiddleN();
     String getLastN();
@@ -60,6 +61,8 @@ public interface CustomerRemote {
     Date getD();
     BufferedImage getIM();
     String getStringIM();
+    String getMsg();
+    double getNewBalance();
     
     
     void searchByAcct(Customer customer, String acct);

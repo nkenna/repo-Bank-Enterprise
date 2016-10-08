@@ -67,7 +67,7 @@ public class Customer implements Serializable {
     private String epin;
     
   
-    private int balance;
+    private double balance;
     
     private Date dod;
     
@@ -191,11 +191,11 @@ public class Customer implements Serializable {
         this.epin = epin;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
     

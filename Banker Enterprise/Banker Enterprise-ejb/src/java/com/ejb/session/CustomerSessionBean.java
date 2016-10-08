@@ -38,6 +38,7 @@ public class CustomerSessionBean implements CustomerRemote {
     @PersistenceContext(unitName="Banker_Enterprise-ejbPU")
     private EntityManager em;
     Random rad = new Random();
+    double balance;
     String firstN = null;
     String middleN = null;
     String lastN = null;
@@ -51,6 +52,9 @@ public class CustomerSessionBean implements CustomerRemote {
     String s = null;
     String type = null;
     String ciizen = null;
+    
+    String Msg = null;
+   
     
    
    
@@ -142,7 +146,7 @@ public class CustomerSessionBean implements CustomerRemote {
         
         customer.setBvn(generatedBVN);
         customer.setEpin(generatedPIN);
-        customer.setBalance(0);
+        customer.setBalance(0.0);
         customer.setImage(imageToByte(fi));
      customer.setAcctnum(generatedAcct);
         em.persist(customer);
@@ -152,14 +156,14 @@ public class CustomerSessionBean implements CustomerRemote {
 
     @Override
     public void deleteAcct(Customer customer, String acctNum) {
-            Query q = em.createNamedQuery("find customer by acctnum");
-     q.setParameter("acctnum", acctNum);
-     customer = (Customer) q.getSingleResult();
-     
-      em.remove(customer);
+        
+    Query q = em.createNamedQuery("find customer by acctnum");
+    q.setParameter("acctnum", acctNum);
+    Customer cu = (Customer) q.getSingleResult();
     
-     em.flush();
-     
+    em.remove(cu);
+    
+    em.flush();
      
     }
 
@@ -182,7 +186,11 @@ public class CustomerSessionBean implements CustomerRemote {
       setAcctType(cu.getType());
       setPhone(cu.getPhone());
       byteToImage(cu.getImage());
-      
+      setBalance(cu.getBalance());
+    }
+    
+    public void setBalance(double bal){
+        balance = bal;
     }
     
     public void setFirstN(String fname){
@@ -218,6 +226,12 @@ public class CustomerSessionBean implements CustomerRemote {
    
     
     @Override
+    public double getBal (){
+        return balance;
+    }
+
+    
+    @Override
     public String getFirstN (){
         return firstN;
     }
@@ -229,7 +243,47 @@ public class CustomerSessionBean implements CustomerRemote {
 
     @Override
     public void depositMoney(String accountNumber, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     int status = 0;
+     
+     Query q = em.createNamedQuery("find customer by acctnum");
+     q.setParameter("acctnum", accountNumber);
+     
+    
+     
+    Customer customer = (Customer) q.getSingleResult();
+    double initBalance = customer.getBalance();
+    double  newBalance = initBalance + amount;
+    
+    customer.setBalance(newBalance);
+     
+    em.merge(customer);
+    
+    status = 1;
+    setMessage(status);
+    setNewBalance(customer.getBalance());
+     em.flush(); 
+    }
+    
+    public void setNewBalance(double balanc){
+        balance = balanc;
+    }
+    
+    @Override
+    public double getNewBalance(){
+        return balance;
+    }
+    
+    public void setMessage(int status){
+        if (status == 1){
+            Msg = "success";
+        }else{
+            Msg = "Failure";
+        }
+    }
+    
+    @Override
+    public String getMsg(){
+        return Msg;
     }
 
     @Override
