@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.delete;
+package com.details;
 
 import com.ejb.entity.Customer;
 import com.ejb.remoteInterface.CustomerRemote;
@@ -11,8 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.embed.swing.SwingFXUtils;
@@ -35,43 +33,40 @@ import javax.naming.NamingException;
  *
  * @author STEINACOZ-PC
  */
-public class DeleteAcctFxmlController implements Initializable {
+public class DetailsAcctFxmlController implements Initializable {
 
-    @FXML
-    private Button deleteButton;
-    @FXML
-    private ImageView imgView;
     @FXML
     private TextField searchTextField;
     @FXML
     private Button searchButton;
     @FXML
-    private Label deleteFirstName;
+    private Label DetailsFirstName;
     @FXML
-    private Label deleteMiddle;
+    private TextArea DetailsAddress;
     @FXML
-    private Label deleteLast;
+    private Label DetailsMiddleName;
     @FXML
-    private Label deleteSex;
+    private Label DetailsLastName;
     @FXML
-    private Label deleteEmail;
+    private Label DetailsDod;
     @FXML
-    private Label deletePhone;
+    private Label DetailsSex;
     @FXML
-    private Label deleteCountry;
+    private Label DetailsEmail;
     @FXML
-    private Label deleteType;
+    private Label DetailsPhone;
     @FXML
-    private Label deleteDod;
+    private Label DetailsType;
     @FXML
-    private TextArea deleteAddress;
+    private Label DetailsBalance;
+    @FXML
+    private Label DetailsCountry;
     
-     Properties props;
-    InitialContext ctx = null;
-     CustomerRemote customerBean;
-     
+  private  Properties props;
+ private   InitialContext ctx = null;
+  private   CustomerRemote customerBean;
     @FXML
-    private Label alertLabel;
+    private ImageView imView;
 
     /**
      * Initializes the controller class.
@@ -82,41 +77,7 @@ public class DeleteAcctFxmlController implements Initializable {
     }    
 
     @FXML
-    private void deleteAcctButton(ActionEvent event) {
-         try{
-            props = new Properties();
-            props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
-            props.put(Context.PROVIDER_URL, "http-remoting://localhost:8050");
-            props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-            props.put(Context.SECURITY_PRINCIPAL, "steinacoz");
-            props.put(Context.SECURITY_CREDENTIALS, "nkenna007");
-            props.put("jboss.naming.client.ejb.context", true);
-           
-            ctx = new InitialContext(props);
-            
-             
- customerBean = (CustomerRemote) ctx.lookup("Banker_Enterprise-ejb/CustomerSessionBean!com.ejb.remoteInterface.CustomerRemote");
-     
-        }catch(NamingException ex){
-            ex.printStackTrace();
-          
-        } 
-        
-        
-Customer customer = new Customer();
-      
-customerBean.deleteAcct(customer, searchTextField.getText());
-System.out.println(customer);
-alertLabel.setText("Customer with Account Number " + searchTextField.getText() + " have been deleted");
-    }
-
-    @FXML
-    private void searchAcctField(ActionEvent event) {
-         
-    }
-
-    @FXML
-    private void searchAcctButton(ActionEvent event) {
+    private void searchDetailsAcctButton(ActionEvent event) {
         try{
             props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
@@ -135,28 +96,24 @@ alertLabel.setText("Customer with Account Number " + searchTextField.getText() +
             ex.printStackTrace();
           
         }
-      
-        
         String getAccNum = searchTextField.getText();
         
         
         Customer customer = new Customer();
         
-        customerBean.searchByAcct(customer, getAccNum);
-     
+         customerBean.searchByAcct(customer, getAccNum);
         
-        
-         this.deleteFirstName.setText(customerBean.getFirstN());
-         this.deleteMiddle.setText(customerBean.getMiddleN());
-         this.deleteLast.setText(customerBean.getLastN());
-         this.deleteAddress.setText(customerBean.getAD());
-         this.deleteCountry.setText(customerBean.getNA());
-         this.deleteDod.setText(customerBean.getD().toString());
-         this.deleteEmail.setText(customerBean.getEM());
-         this.deleteType.setText(customerBean.getTY());
-         this.deletePhone.setText(customerBean.getPH());
-         this.deleteSex.setText(customerBean.getGender());
-         
+         this.DetailsFirstName.setText(customerBean.getFirstN());
+         this.DetailsMiddleName.setText(customerBean.getMiddleN());
+         this.DetailsLastName.setText(customerBean.getLastN());
+         this.DetailsAddress.setText(customerBean.getAD());
+         this.DetailsCountry.setText(customerBean.getNA());
+         this.DetailsDod.setText(customerBean.getD().toString());
+         this.DetailsEmail.setText(customerBean.getEM());
+         this.DetailsType.setText(customerBean.getTY());
+         this.DetailsPhone.setText(customerBean.getPH());
+         this.DetailsSex.setText(customerBean.getGender());
+         this.DetailsBalance.setText(String.valueOf(customerBean.getBal()));
         BufferedImage bi = null;
       try{
         
@@ -171,8 +128,7 @@ alertLabel.setText("Customer with Account Number " + searchTextField.getText() +
            e.getMessage();
        }
          Image im = SwingFXUtils.toFXImage(bi, null);
-        // imv.setImage(im);
-        imgView.setImage(im);
+        imView.setImage(im);
     }
     
 }

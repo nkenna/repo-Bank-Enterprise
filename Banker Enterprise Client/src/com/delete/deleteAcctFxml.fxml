@@ -53,10 +53,10 @@
             </Button>
             <Label fx:id="alertLabel" prefHeight="17.0" prefWidth="401.0" textFill="#12bf12" wrapText="true">
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets top="10.0" />
                </VBox.margin>
                <padding>
-                  <Insets left="190.0" />
+                  <Insets left="10.0" />
                </padding>
             </Label>
             <ImageView fx:id="imgView" fitHeight="151.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true">

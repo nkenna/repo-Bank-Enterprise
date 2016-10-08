@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.delete;
+package com.deposit;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,15 +21,13 @@ import javafx.stage.Stage;
  *
  * @author STEINACOZ-PC
  */
-public class DeleteMain extends Application  {
+public class DepositMain extends Application {
     
     @Override
-    public void start(Stage primaryStage) throws IOException {
-     
-        
-          // Create the FXMLLoader
+    public void start(Stage primaryStage) throws IOException  {
+             // Create the FXMLLoader
         FXMLLoader loader = new FXMLLoader();
-         String fxmlDocPath = "src/com/delete/deleteAcctFxml.fxml";
+         String fxmlDocPath = "src/com/deposit/DepositAcctFxml.fxml";
          
          FileInputStream fxmlStream = new FileInputStream(fxmlDocPath);
           // Create the Pane and all Details
@@ -37,7 +35,7 @@ public class DeleteMain extends Application  {
         
         Scene scene = new Scene(root);
         
-        primaryStage.setTitle("Delete Account Form");
+        primaryStage.setTitle("Account Details");
         
         primaryStage.setScene(scene);
         primaryStage.show();
