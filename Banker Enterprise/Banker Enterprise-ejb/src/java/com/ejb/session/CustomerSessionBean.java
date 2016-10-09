@@ -3,6 +3,8 @@ package com.ejb.session;
 
 import com.ejb.entity.Customer;
 import com.ejb.remoteInterface.CustomerRemote;
+import com.emailSend.EmailSender;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -54,6 +56,7 @@ public class CustomerSessionBean implements CustomerRemote {
     String ciizen = null;
     
     String Msg = null;
+    EmailSender es = new EmailSender();
    
     
    
@@ -277,7 +280,7 @@ public class CustomerSessionBean implements CustomerRemote {
         if (status == 1){
             Msg = "success";
         }else{
-            Msg = "Failure";
+            Msg = "failure";
         }
     }
     
@@ -288,7 +291,46 @@ public class CustomerSessionBean implements CustomerRemote {
 
     @Override
     public void withdrawMoney(String accountNumber, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       int status;
+     
+     Query q = em.createNamedQuery("find customer by acctnum");
+     q.setParameter("acctnum", accountNumber);
+     
+    
+     
+    Customer customer = (Customer) q.getSingleResult();
+    double initBalance = customer.getBalance();
+    String emailAddress = customer.getEmail();
+    String accountName = customer.getFirstname() +" "+ customer.getMiddlename() +" "+ customer.getLastname();
+   // String acctNumber = customer.getAcctnum();
+    
+      if (initBalance >= amount){
+    double  newBalance = initBalance - amount;
+  Date d = new Date();
+   
+    customer.setBalance(newBalance);
+     
+    em.merge(customer);
+    
+    status = 1;
+    setMessage(status);
+    setNewBalance(customer.getBalance());
+     em.flush(); 
+   
+         es.setIds(emailAddress, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "adaeze");
+         es.setSubject("Debit Alert From We-Eat Bank Ltd");
+         es.setMessage("debit Notification which occurred on: " + d
+                         + "\n" + "Account Number: " + accountName
+                          + "\n" + "Debited Amount: N" + amount
+                         + "\n" + "Account Balance: N" + newBalance
+                           + "\n" + "Account Number: " + accountNumber);
+         es.useDefaultProps();
+    }else if (initBalance < amount){
+          status = 0;
+          setMessage(status);
+        
+    }
     }
 
     @Override
@@ -318,6 +360,8 @@ public class CustomerSessionBean implements CustomerRemote {
 
     @Override
     public void sendEmail(Customer customer, String emailAd) {
+         
+        
         String to = emailAd;//"nkennannadi@gmail.com";
         
         //sender's email ID

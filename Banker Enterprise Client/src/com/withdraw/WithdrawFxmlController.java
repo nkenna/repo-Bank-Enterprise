@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.deposit;
+package com.withdraw;
 
 import com.ejb.entity.Customer;
 import com.ejb.remoteInterface.CustomerRemote;
@@ -33,7 +33,7 @@ import javax.naming.NamingException;
  *
  * @author STEINACOZ-PC
  */
-public class DepositAcctFxmlController implements Initializable {
+public class WithdrawFxmlController implements Initializable {
 
     @FXML
     private TextField searchTextField;
@@ -42,8 +42,6 @@ public class DepositAcctFxmlController implements Initializable {
     @FXML
     private TextField amountTextField;
     @FXML
-    private Button depositAcctButton;
-    @FXML
     private CheckBox successCheckBox;
     @FXML
     private CheckBox failureCheckBox;
@@ -51,8 +49,10 @@ public class DepositAcctFxmlController implements Initializable {
     private Label newBalance;
     @FXML
     private Label balanceLabel;
+    @FXML
+    private Button withdrawAcctButton;
     
-     private  Properties props;
+    private  Properties props;
  private   InitialContext ctx = null;
   private   CustomerRemote customerBean;
     private ImageView imView;
@@ -66,15 +66,8 @@ public class DepositAcctFxmlController implements Initializable {
     }    
 
     @FXML
-    private void successAcctBox(ActionEvent event) {
-    }
-
-    @FXML
-    private void failureAcctBox(ActionEvent event) {
-    }
-
-    @FXML
     private void searchActButton(ActionEvent event) {
+        
          try{
             props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
@@ -116,13 +109,22 @@ public class DepositAcctFxmlController implements Initializable {
            e.getMessage();
        }
          Image im = SwingFXUtils.toFXImage(bi, null);
-     //   imView.setImage(im);
+//        imView.setImage(im);
+    }
+
+
+    @FXML
+    private void successAcctBox(ActionEvent event) {
     }
 
     @FXML
-    private void depositActButton(ActionEvent event) {
+    private void failureAcctBox(ActionEvent event) {
+    }
+
+    @FXML
+    private void withdrawActButton(ActionEvent event) {
         
-           try{
+        try{
             props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
             props.put(Context.PROVIDER_URL, "http-remoting://localhost:8050");
@@ -143,23 +145,20 @@ public class DepositAcctFxmlController implements Initializable {
            
            Customer cu = new Customer();
            String accountNumber = searchTextField.getText();
-           int depositAmt = Integer.parseInt(amountTextField.getText());
-           customerBean.depositMoney(accountNumber, depositAmt);
+           int withdrawAmt = Integer.parseInt(amountTextField.getText());
+           customerBean.withdrawMoney(accountNumber, withdrawAmt);
            this.newBalance.setText(String.valueOf(customerBean.getNewBalance()));
            String stat = customerBean.getMsg();
            
            if (stat.equals("success")){
                this.successCheckBox.setSelected(true);
-           }else{
+                 this.failureCheckBox.setSelected(false);
+           }else if(stat.equals("failure")){
                this.failureCheckBox.setSelected(true);
+               this.successCheckBox.setSelected(false);
            }
            
         
-        
     }
-    
-    
-
-    
     
 }
