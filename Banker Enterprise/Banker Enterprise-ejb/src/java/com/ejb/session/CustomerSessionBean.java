@@ -318,7 +318,7 @@ public class CustomerSessionBean implements CustomerRemote {
      em.flush(); 
    
          es.setIds(emailAddress, "nnadiug@rocketmail.com");
-         es.setLoginCredentials("nnadiug@rocketmail.com", "adaeze");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
          es.setSubject("Debit Alert From We-Eat Bank Ltd");
          es.setMessage("debit Notification which occurred on: " + d
                          + "\n" + "Account Number: " + accountName
@@ -373,7 +373,7 @@ public class CustomerSessionBean implements CustomerRemote {
    
   //sending notification to sender
          es.setIds(senderEmailAddress, "nnadiug@rocketmail.com");
-         es.setLoginCredentials("nnadiug@rocketmail.com", "adaeze");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
          es.setSubject("debit Alert From We-Eat Bank Ltd");
          es.setMessage("debit Notification which occurred on: " + d
                          + "\n" + "Account Name: " + senderAccountName
@@ -396,7 +396,7 @@ public class CustomerSessionBean implements CustomerRemote {
     public void sendRecieverEmail(String emailID, String receiverAccountName, Double transferAmount, Double recieverNewBalance, String recieverAccountNumber){
      //sender notification to reciever
          es.setIds(emailID, "nnadiug@rocketmail.com");
-         es.setLoginCredentials("nnadiug@rocketmail.com", "adaeze");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "1234567890");
          es.setSubject("Credit Alert From We-Eat Bank Ltd");
          es.setMessage("Credit Notification which occurred on: " + d
                          + "\n" + "Account Name: " + receiverAccountName
@@ -437,7 +437,7 @@ public class CustomerSessionBean implements CustomerRemote {
         
         //login credentials
         final String username = "nnadiug@rocketmail.com";
-        final String password = "adaeze";
+        final String password = "123456789";
         
         //sending through yahoo mail
         String host = "smtp.mail.yahoo.com";
