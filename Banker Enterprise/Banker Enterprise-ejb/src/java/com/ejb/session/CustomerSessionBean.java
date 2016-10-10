@@ -334,8 +334,76 @@ public class CustomerSessionBean implements CustomerRemote {
     }
 
     @Override
-    public void transferMoney(String senderAcct, String recieverAcct, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void transferMoney(String senderAcct, String recieverAcct, double transferAmount) {
+     int status;
+     
+     Query q = em.createNamedQuery("find customer by acctnum");
+     q.setParameter("acctnum", senderAcct);
+     
+    
+     
+    Customer senderCustomer = (Customer) q.getSingleResult();
+    double senderInitBalance = senderCustomer.getBalance();
+    String senderEmailAddress = senderCustomer.getEmail();
+    String senderAccountName = senderCustomer.getFirstname() +" "+ senderCustomer.getMiddlename() +" "+ senderCustomer.getLastname();
+   // String acctNumber = customer.getAcctnum();
+   
+    Query q1 = em.createNamedQuery("find customer by acctnum");
+     q1.setParameter("acctnum", recieverAcct);
+     
+     Customer recieverCustomer = (Customer) q1.getSingleResult();
+    double recieverInitBalance = recieverCustomer.getBalance();
+    String recieverEmailAddress = recieverCustomer.getEmail();
+    String receiverAccountName = recieverCustomer.getFirstname() +" "+ recieverCustomer.getMiddlename() +" "+ recieverCustomer.getLastname();
+    
+      if (senderInitBalance >= transferAmount){
+    double  senderNewBalance = senderInitBalance - transferAmount;
+  Date d = new Date();
+  senderCustomer.setBalance(senderNewBalance);
+  em.merge(senderCustomer);
+  status = 1;
+  setMessage(status);
+  setNewBalance(senderCustomer.getBalance());
+  em.flush(); 
+  
+  double recieverNewBalance = recieverInitBalance + transferAmount;
+  recieverCustomer.setBalance(recieverNewBalance);
+  em.merge(recieverCustomer);
+  em.flush();
+   
+  //sending notification to sender
+         es.setIds(senderEmailAddress, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "adaeze");
+         es.setSubject("debit Alert From We-Eat Bank Ltd");
+         es.setMessage("debit Notification which occurred on: " + d
+                         + "\n" + "Account Name: " + senderAccountName
+                          + "\n" + "Debited Amount: N" + transferAmount
+                         + "\n" + "Account Balance: N" + senderNewBalance
+                           + "\n" + "Account Number: " + senderCustomer.getAcctnum()
+                             + "\n" + "Transfered to Account Name: " + receiverAccountName
+                         + "\n" + "with Account Number: " + recieverCustomer.getAcctnum());
+         es.useDefaultProps();
+         
+       this.sendRecieverEmail(recieverEmailAddress, receiverAccountName, transferAmount, recieverNewBalance, recieverCustomer.getAcctnum());
+    }else if (senderInitBalance < transferAmount){
+          status = 0;
+          setMessage(status);
+        
+    }
+    }
+    
+    //this method sends email alert to the reciever
+    public void sendRecieverEmail(String emailID, String receiverAccountName, Double transferAmount, Double recieverNewBalance, String recieverAccountNumber){
+     //sender notification to reciever
+         es.setIds(emailID, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "adaeze");
+         es.setSubject("Credit Alert From We-Eat Bank Ltd");
+         es.setMessage("Credit Notification which occurred on: " + d
+                         + "\n" + "Account Name: " + receiverAccountName
+                          + "\n" + "Credited Amount: N" + transferAmount
+                         + "\n" + "Account Balance: N" + recieverNewBalance
+                           + "\n" + "Account Number: " + recieverAccountNumber);
+         es.useDefaultProps();     
     }
 
     @Override
