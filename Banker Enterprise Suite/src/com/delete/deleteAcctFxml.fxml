@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../../banker/enterprise/suite/suitefxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.delete.DeleteAcctFxmlController">
+    
+   <children>
+      <MenuBar prefHeight="20.0" prefWidth="800.0" styleClass="menubar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <VBox layoutX="1.0" layoutY="114.0" prefHeight="486.0" prefWidth="400.0" AnchorPane.rightAnchor="400.0">
+         <children>
+            <Label contentDisplay="CENTER" lineSpacing="2.0" prefHeight="17.0" prefWidth="397.0" text="Clicking on the DELETE Button will delete the customer's record" textAlignment="CENTER" textFill="#cf1515" wrapText="true">
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </Label>
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteAcctButton" prefHeight="41.0" prefWidth="112.0" styleClass="AnchorPane" text="DELETE" textFill="#f21111">
+               <VBox.margin>
+                  <Insets left="150.0" top="50.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Bell MT Bold" size="14.0" />
+               </font>
+            </Button>
+            <Label fx:id="alertLabel" prefHeight="17.0" prefWidth="401.0" textFill="#12bf12" wrapText="true">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+            <ImageView fx:id="imgView" fitHeight="151.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" styleClass="AnchorPane">
+               <VBox.margin>
+                  <Insets left="210.0" top="150.0" />
+               </VBox.margin>
+            </ImageView>
+         </children>
+      </VBox>
+      <HBox layoutY="25.0" prefHeight="100.0" prefWidth="807.0" styleClass="AnchorPane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label prefHeight="33.0" prefWidth="132.0" text="Enter Account Number">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="10.0" top="30.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="searchTextField" onAction="#searchAcctField" prefHeight="25.0" prefWidth="265.0" promptText="Enter Valid Account Number to Search">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </TextField>
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchAcctButton" prefHeight="25.0" prefWidth="94.0" text="Search">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="30.0" right="10.0" top="30.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <AnchorPane layoutX="407.0" layoutY="114.0" prefHeight="486.0" prefWidth="400.0" styleClass="AnchorPane" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Label layoutX="42.0" layoutY="32.0" styleClass="AnchorPane" text="First Name" />
+            <Label layoutX="42.0" layoutY="73.0" styleClass="AnchorPane" text="MiddleName" />
+            <Label layoutX="42.0" layoutY="105.0" styleClass="AnchorPane" text="LastName" />
+            <Label layoutX="42.0" layoutY="143.0" styleClass="AnchorPane" text="Sex" />
+            <Label layoutX="42.0" layoutY="180.0" styleClass="AnchorPane" text="Email" />
+            <Label layoutX="42.0" layoutY="220.0" styleClass="AnchorPane" text="Phone" />
+            <Label layoutX="42.0" layoutY="255.0" styleClass="AnchorPane" text="Country" />
+            <Label layoutX="42.0" layoutY="290.0" styleClass="AnchorPane" text="Account Type" />
+            <Label layoutX="42.0" layoutY="324.0" styleClass="AnchorPane" text="Date of Birth" />
+            <Label layoutX="42.0" layoutY="357.0" styleClass="AnchorPane" text="Address" />
+            <Label fx:id="deleteFirstName" layoutX="146.0" layoutY="32.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deleteMiddle" layoutX="146.0" layoutY="73.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deleteLast" layoutX="146.0" layoutY="105.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deleteSex" layoutX="146.0" layoutY="143.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deleteEmail" layoutX="146.0" layoutY="180.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deletePhone" layoutX="146.0" layoutY="220.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deleteCountry" layoutX="146.0" layoutY="255.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deleteType" layoutX="146.0" layoutY="290.0" prefHeight="17.0" prefWidth="222.0" />
+            <Label fx:id="deleteDod" layoutX="146.0" layoutY="324.0" prefHeight="17.0" prefWidth="222.0" />
+            <TextArea fx:id="deleteAddress" layoutX="157.0" layoutY="357.0" prefHeight="100.0" prefWidth="200.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../../banker/enterprise/suite/suitefxml.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.withdraw.WithdrawFxmlController">
+   <children>
+      
+    
+      <MenuBar layoutY="2.0" prefWidth="800.0" styleClass="menubar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label layoutX="63.0" layoutY="72.0" prefHeight="17.0" prefWidth="130.0" text="Enter Account Number" />
+      <TextField fx:id="searchTextField" layoutX="239.0" layoutY="68.0" prefHeight="25.0" prefWidth="225.0" />
+      <Button fx:id="searchAcctButton" layoutX="555.0" layoutY="68.0" mnemonicParsing="false" onAction="#searchActButton" text="Search" />
+      <Label layoutX="67.0" layoutY="215.0" prefHeight="17.0" prefWidth="122.0" text="Enter Amount (N)" />
+      <TextField fx:id="amountTextField" layoutX="243.0" layoutY="211.0" prefHeight="25.0" prefWidth="225.0" />
+      <Button fx:id="withdrawAcctButton" layoutX="555.0" layoutY="211.0" mnemonicParsing="false" onAction="#withdrawActButton" text="Withdraw" />
+      <Label alignment="CENTER" layoutX="302.0" layoutY="299.0" lineSpacing="1.0" prefHeight="17.0" prefWidth="107.0" text="STATUS" textFill="#f51f1f" wrapText="true">
+         
+      </Label>
+      <CheckBox fx:id="successCheckBox" layoutX="329.0" layoutY="342.0" mnemonicParsing="false" onAction="#successAcctBox" styleClass="checkbox" text="SUCCESS" textFill="#1af51a">
+         
+      </CheckBox>
+      <CheckBox fx:id="failureCheckBox" layoutX="329.0" layoutY="387.0" mnemonicParsing="false" onAction="#failureAcctBox" styleClass="checkbox" text="FAILURE" textFill="#d71919">
+        
+      </CheckBox>
+      <Label layoutX="63.0" layoutY="140.0" text="Account Balance (N)" />
+      <Label layoutX="61.0" layoutY="492.0" text="New Account Balance (N)" />
+      <Label fx:id="newBalance" layoutX="249.0" layoutY="492.0" prefHeight="17.0" prefWidth="232.0" />
+      <Label fx:id="balanceLabel" layoutX="239.0" layoutY="132.0" prefHeight="25.0" prefWidth="232.0" />
+   </children>
+</AnchorPane>

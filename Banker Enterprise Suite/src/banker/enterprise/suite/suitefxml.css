@@ -1,0 +1,35 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.AnchorPane {
+    -fx-border-color: #fff232;
+    -fx-background-color: #000000
+}
+
+.AnchorPane > .label{ -fx-text-fill: #fff232;
+        -fx-background-color: #000000;
+        -fx-border-color: #f3e624; }
+
+.AnchorPane > .button{ -fx-text-fill: #fff232;
+        -fx-background-color: #000000;
+        -fx-border-color: #f3e624; }
+
+.AnchorPane > .button:hover{
+    -fx-background-color: #33ff66;
+    -fx-text-fill: #000000;
+    -fx-pref-width: 190px;
+    -fx-pref-height: 60px;
+}
+
+.AnchorPane > .menubar{
+    -fx-text-fill: #fff232;
+    -fx-background-color: #fff232;
+        -fx-border-color: #f3e624
+}
+
+.AnchorPane > .checkbox{
+      -fx-text-fill: #fff232;
+     
+}
+

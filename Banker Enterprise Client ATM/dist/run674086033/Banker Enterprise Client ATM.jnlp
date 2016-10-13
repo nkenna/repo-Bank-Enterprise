@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Banker Enterprise Client ATM.jnlp">
+  <information>
+    <title>Banker Enterprise Client ATM</title>
+    <vendor>STEINACOZ-PC</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  <shortcut><desktop/></shortcut>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="lib/Banker_Enterprise-ejb.jar" size="53470" download="eager" />
+    <jar href="lib/EmailSenderLib.jar" size="7882" download="eager" />
+    <jar href="lib/javax.mail-1.5.6.jar" size="608084" download="eager" />
+    <jar href="lib/jboss-client.jar" size="11272815" download="eager" />
+    <jar href="lib/jpa.jar" size="48045" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Banker Enterprise Client ATM" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="banker.enterprise.client.atm.BankerEnterpriseClientATM"  name="Banker Enterprise Client ATM" />
+  <update check="background"/>
+</jnlp>

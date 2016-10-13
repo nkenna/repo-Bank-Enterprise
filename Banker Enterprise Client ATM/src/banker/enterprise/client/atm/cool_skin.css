@@ -1,0 +1,57 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 10, 2016, 8:21:08 PM
+    Author     : STEINACOZ-PC
+*/
+
+.anchorPane > .button{ -fx-text-fill: #fff232;
+        -fx-background-color: #000000;
+        -fx-border-color: #f3e624; }
+
+.anchorPane > .label{ -fx-text-fill: #fff232;
+        -fx-background-color: #000000;
+        -fx-border-color: #f3e624; }
+
+.anchorPane > .button:hover{
+    -fx-background-color: #33ff66;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 30px;
+}  
+
+.anchorPane > .imgdashboard:hover{
+    -fx-background-color: #33ff66;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 30px;
+}  
+
+.anchorPane {
+     -fx-border-color: #fff232;
+}
+
+
+.withdrawAnchorPane{
+    -fx-background-color: #000000;
+    -fx-border-color: #fff232;
+}
+
+.withdrawAnchorPane > .button{ -fx-text-fill: #fff232;
+        -fx-background-color: #000000;
+        -fx-border-color: #f3e624; }
+
+.withdrawAnchorPane > .button:hover{
+    -fx-background-color: #33ff66;
+    -fx-pref-width: 120px;
+    -fx-pref-height: 30px;
+} 
+
+.withdrawAnchorPane > .label{ -fx-text-fill: #fff232;
+        -fx-background-color: #000000;
+        -fx-border-color: #f3e624; }
+
+.withdrawAnchorPane > .text-field{ -fx-text-fill: #fff232;
+        -fx-background-color: #000000;
+        -fx-border-color: #f3e624;}

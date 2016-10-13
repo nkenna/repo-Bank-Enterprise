@@ -10,7 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class Customer_ {
 
 	public static volatile SingularAttribute<Customer, String> citizen;
-	public static volatile SingularAttribute<Customer, byte[]> image;
+	public static volatile SingularAttribute<Customer, String> image;
 	public static volatile SingularAttribute<Customer, String> firstname;
 	public static volatile SingularAttribute<Customer, String> address;
 	public static volatile SingularAttribute<Customer, String> acctnum;
