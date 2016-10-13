@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="withdrawAnchorPane" prefHeight="500.0" prefWidth="400.0" styleClass="withdrawAnchorPane" stylesheets="@../../banker/enterprise/client/atm/cool_skin.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.transfer.TransferFXMLController">
+   <children>
+      <Button fx:id="searchButton" layoutX="256.0" layoutY="46.0" mnemonicParsing="false" onAction="#searchActButton" prefHeight="27.0" prefWidth="88.0" text="Search" />
+      <TextField fx:id="pinSearchTextField" layoutX="62.0" layoutY="47.0" promptText="Enter Pin" />
+      <TextField fx:id="amtTextField" layoutX="62.0" layoutY="93.0" promptText="Enter Amount" />
+      <Button fx:id="transferBtn" layoutX="256.0" layoutY="137.0" mnemonicParsing="false" onAction="#transferActBtn" prefHeight="27.0" prefWidth="88.0" text="Transfer" />
+      <Label fx:id="statusLabel" layoutX="65.0" layoutY="208.0" prefHeight="19.0" prefWidth="283.0" />
+      <Label layoutX="65.0" layoutY="250.0" text="Amount Transfered" />
+      <Label layoutX="65.0" layoutY="286.0" text="Old Account Balance" />
+      <Label layoutX="65.0" layoutY="319.0" text="New Account Balance" />
+      <Button fx:id="pinPaneBtn" layoutX="312.0" layoutY="409.0" mnemonicParsing="false" onAction="#pinPaneActBtn" prefHeight="27.0" prefWidth="108.0" text="Change Pin" AnchorPane.rightAnchor="1.0" />
+      <Button fx:id="withdrawPaneBtn" layoutX="2.0" layoutY="409.0" mnemonicParsing="false" onAction="#withdrawPaneActBtn" prefHeight="27.0" prefWidth="108.0" text="Withdraw" AnchorPane.leftAnchor="1.0" />
+      <Label fx:id="newBalanceLabel" layoutX="200.0" layoutY="319.0" prefHeight="19.0" prefWidth="149.0" />
+      <Label fx:id="oldBalanceLabel" layoutX="200.0" layoutY="286.0" prefHeight="19.0" prefWidth="149.0" />
+      <Label fx:id="amountLabel" layoutX="200.0" layoutY="250.0" prefHeight="19.0" prefWidth="149.0" />
+      <Button fx:id="exitBtn" layoutX="146.0" layoutY="409.0" mnemonicParsing="false" onAction="#exitActBtn" prefHeight="27.0" prefWidth="108.0" text="Exit" />
+      <Button fx:id="dashBoardPaneBtn" layoutX="146.0" layoutY="449.0" mnemonicParsing="false" onAction="#dashboardPaneActBtn" prefHeight="27.0" prefWidth="108.0" text="Dashboard" />
+      <TextField fx:id="acctNumTextField" layoutX="62.0" layoutY="137.0" promptText="Enter Reciever's Account " />
+   </children>
+</AnchorPane>

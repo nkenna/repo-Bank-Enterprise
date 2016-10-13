@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="anchorPane" fx:id="anchorPane" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: Black;" styleClass="anchorPane" stylesheets="@cool_skin.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="banker.enterprise.client.atm.DashboardFXMLController">
+   <children>
+      <Button id="withdrawbtn" fx:id="withdrawButton" layoutY="76.0" mnemonicParsing="false" onAction="#withdrawBtnAct" onMouseDragEntered="#mouseEntered" prefHeight="25.0" prefWidth="115.0" text="WITHDRAW" AnchorPane.leftAnchor="0.0" />
+      <Button fx:id="pinButton" layoutY="338.0" mnemonicParsing="false" onAction="#pinBtnAct" onMouseDragEntered="#mouseEntered" prefHeight="27.0" prefWidth="115.0" text="CHANGE PIN" />
+      <Button fx:id="transferButton" layoutY="200.0" mnemonicParsing="false" onAction="#transferBtnAct" onMouseDragEntered="#mouseEntered" prefHeight="27.0" prefWidth="115.0" text="TRANSFER" />
+      <ImageView id="imgdashboard" fx:id="img" fitHeight="288.0" fitWidth="215.0" layoutX="194.0" layoutY="76.0" pickOnBounds="true" styleClass="anchorPane" AnchorPane.rightAnchor="2.0">
+         <effect>
+            <Glow />
+         </effect>
+      </ImageView>
+      <Label layoutX="3.0" layoutY="27.0" prefHeight="27.0" prefWidth="150.0" text="Our Number of Customers" AnchorPane.leftAnchor="2.0" />
+      <Label fx:id="numLabel" alignment="CENTER" layoutX="193.0" layoutY="24.0" prefHeight="33.0" prefWidth="88.0" />
+   </children>
+</AnchorPane>

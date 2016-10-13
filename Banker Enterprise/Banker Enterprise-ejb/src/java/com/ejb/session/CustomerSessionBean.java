@@ -3,6 +3,8 @@ package com.ejb.session;
 
 import com.ejb.entity.Customer;
 import com.ejb.remoteInterface.CustomerRemote;
+import com.emailSend.EmailSender;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -38,6 +40,7 @@ public class CustomerSessionBean implements CustomerRemote {
     @PersistenceContext(unitName="Banker_Enterprise-ejbPU")
     private EntityManager em;
     Random rad = new Random();
+    double balance;
     String firstN = null;
     String middleN = null;
     String lastN = null;
@@ -52,19 +55,29 @@ public class CustomerSessionBean implements CustomerRemote {
     String type = null;
     String ciizen = null;
     
+    String Msg = null;
+    String statusMsg=null;
+    EmailSender es = new EmailSender();
+   
+   String myPicture;
    
    
-       private static BufferedImage resizeImage(BufferedImage originalImage, int type){
-        BufferedImage resizedImage = new BufferedImage(150, 150, type);
+  
+    
+    
+    /**
+       public BufferedImage resizeImage(BufferedImage originalImage, int type){
+       
+           BufferedImage resizedImage = new BufferedImage(150, 150, type);
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(resizedImage, 0, 0, 150, 150, null);
         g.dispose();
         
         return resizedImage;
-    }
+    }**/
  
-       @Override
-        public byte[] imageToByte(File f){
+/**       @Override
+        public String imageToString(String f){
         byte[] b = null;
         byte[] initB = null;
         
@@ -77,21 +90,19 @@ public class CustomerSessionBean implements CustomerRemote {
        
         ImageIO.write(resizeImagePng, "png", baos);
         baos.flush();
-        initB = baos.toByteArray();
-        
-        String  initBS = javax.xml.bind.DatatypeConverter.printHexBinary(initB);
-        b = javax.xml.bind.DatatypeConverter.parseHexBinary(initBS);
+       
         }catch(IOException e){
             e.getMessage();
         }
         return b;
     }
+    **/
     
    
     
 
     @Override
-    public void CreateNewAcct(Customer customer, File fi, String gender, String emailAdr) {
+    public void CreateNewAcct(Customer customer, String fi, String gender, String emailAdr) {
         String ge = null;
         
         //account number
@@ -142,24 +153,34 @@ public class CustomerSessionBean implements CustomerRemote {
         
         customer.setBvn(generatedBVN);
         customer.setEpin(generatedPIN);
-        customer.setBalance(0);
-        customer.setImage(imageToByte(fi));
+        customer.setBalance(0.0);
+        customer.setImage(fi);
      customer.setAcctnum(generatedAcct);
         em.persist(customer);
         em.flush();
-      sendEmail(customer, emailAdr);
+        statusMsg = "Account Creation Successful...";
+        setStatusMsg(statusMsg);
+        Thread newAcctEmailThread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                  sendEmail(customer, emailAdr);
+            }
+            
+        }, "new Account Email Thread");
+        newAcctEmailThread.start();
+    
     }
 
     @Override
     public void deleteAcct(Customer customer, String acctNum) {
-            Query q = em.createNamedQuery("find customer by acctnum");
-     q.setParameter("acctnum", acctNum);
-     customer = (Customer) q.getSingleResult();
-     
-      em.remove(customer);
+        
+    Query q = em.createNamedQuery("find customer by acctnum");
+    q.setParameter("acctnum", acctNum);
+    Customer cu = (Customer) q.getSingleResult();
     
-     em.flush();
-     
+    em.remove(cu);
+    
+    em.flush();
      
     }
 
@@ -181,8 +202,15 @@ public class CustomerSessionBean implements CustomerRemote {
       setNationality(cu.getCitizen());
       setAcctType(cu.getType());
       setPhone(cu.getPhone());
-      byteToImage(cu.getImage());
-      
+      setBalance(cu.getBalance());
+      setStringIM(cu.getImage());
+    }
+    
+    public void setStringIM (String im){
+        this.myPicture = im;
+    }
+    public void setBalance(double bal){
+        balance = bal;
     }
     
     public void setFirstN(String fname){
@@ -218,6 +246,12 @@ public class CustomerSessionBean implements CustomerRemote {
    
     
     @Override
+    public double getBal (){
+        return balance;
+    }
+
+    
+    @Override
     public String getFirstN (){
         return firstN;
     }
@@ -229,27 +263,308 @@ public class CustomerSessionBean implements CustomerRemote {
 
     @Override
     public void depositMoney(String accountNumber, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     int status = 0;
+     
+     Query q = em.createNamedQuery("find customer by acctnum");
+     q.setParameter("acctnum", accountNumber);
+     
+    
+     
+    Customer customer = (Customer) q.getSingleResult();
+    double initBalance = customer.getBalance();
+    double  newBalance = initBalance + amount;
+    
+    customer.setBalance(newBalance);
+     
+    em.merge(customer);
+    
+    status = 1;
+    setMessage(status);
+    setNewBalance(customer.getBalance());
+     em.flush(); 
+    }
+    
+    public void setNewBalance(double balanc){
+        balance = balanc;
+    }
+    
+    @Override
+    public double getNewBalance(){
+        return balance;
+    }
+    
+    public void setMessage(int status){
+        if (status == 1){
+            Msg = "success";
+        }else{
+            Msg = "failure";
+        }
+    }
+    
+    @Override
+    public String getMsg(){
+        return Msg;
     }
 
     @Override
     public void withdrawMoney(String accountNumber, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       int status;
+     
+     Query q = em.createNamedQuery("find customer by acctnum");
+     q.setParameter("acctnum", accountNumber);
+     
+    
+     
+    Customer customer = (Customer) q.getSingleResult();
+    double initBalance = customer.getBalance();
+    String emailAddress = customer.getEmail();
+    String accountName = customer.getFirstname() +" "+ customer.getMiddlename() +" "+ customer.getLastname();
+   // String acctNumber = customer.getAcctnum();
+    
+      if (initBalance >= amount){
+    double  newBalance = initBalance - amount;
+  Date d = new Date();
+   
+    customer.setBalance(newBalance);
+     
+    em.merge(customer);
+    
+    status = 1;
+    setMessage(status);
+    setNewBalance(customer.getBalance());
+     em.flush(); 
+   
+     Thread t = new Thread (new Runnable(){
+        @Override
+        public void run() {
+             es.setIds(emailAddress, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
+         es.setSubject("Debit Alert From We-Eat Bank Ltd");
+         es.setMessage("debit Notification which occurred on: " + d
+                         + "\n" + "Account Number: " + accountName
+                          + "\n" + "Debited Amount: N" + amount
+                         + "\n" + "Account Balance: N" + newBalance
+                           + "\n" + "Account Number: " + accountNumber);
+         es.useDefaultProps();
+        }
+         
+     }, "Withdraw Money Email Send");
+     t.start();
+        
+    }else if (initBalance < amount){
+          status = 0;
+          setMessage(status);
+        
+    }
     }
 
     @Override
-    public void transferMoney(String senderAcct, String recieverAcct, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void transferMoney(String senderAcct, String recieverAcct, double transferAmount) {
+     int status;
+     
+     Query q = em.createNamedQuery("find customer by acctnum");
+     q.setParameter("acctnum", senderAcct);
+     
+    
+     
+    Customer senderCustomer = (Customer) q.getSingleResult();
+    double senderInitBalance = senderCustomer.getBalance();
+    String senderEmailAddress = senderCustomer.getEmail();
+    String senderAccountName = senderCustomer.getFirstname() +" "+ senderCustomer.getMiddlename() +" "+ senderCustomer.getLastname();
+   // String acctNumber = customer.getAcctnum();
+   
+    Query q1 = em.createNamedQuery("find customer by acctnum");
+     q1.setParameter("acctnum", recieverAcct);
+     
+     Customer recieverCustomer = (Customer) q1.getSingleResult();
+    double recieverInitBalance = recieverCustomer.getBalance();
+    String recieverEmailAddress = recieverCustomer.getEmail();
+    String receiverAccountName = recieverCustomer.getFirstname() +" "+ recieverCustomer.getMiddlename() +" "+ recieverCustomer.getLastname();
+    
+      if (senderInitBalance >= transferAmount){
+    double  senderNewBalance = senderInitBalance - transferAmount;
+  Date d = new Date();
+  senderCustomer.setBalance(senderNewBalance);
+  em.merge(senderCustomer);
+  status = 1;
+  setMessage(status);
+  setNewBalance(senderCustomer.getBalance());
+  em.flush(); 
+  
+  double recieverNewBalance = recieverInitBalance + transferAmount;
+  recieverCustomer.setBalance(recieverNewBalance);
+  em.merge(recieverCustomer);
+  em.flush();
+   
+  Thread transferThread = new Thread (new Runnable() {
+        @Override
+        public void run() {
+        //sending notification to sender
+         es.setIds(senderEmailAddress, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
+         es.setSubject("debit Alert From We-Eat Bank Ltd");
+         es.setMessage("debit Notification which occurred on: " + d
+                         + "\n" + "Account Name: " + senderAccountName
+                          + "\n" + "Debited Amount: N" + transferAmount
+                         + "\n" + "Account Balance: N" + senderNewBalance
+                           + "\n" + "Account Number: " + senderCustomer.getAcctnum()
+                             + "\n" + "Transfered to Account Name: " + receiverAccountName
+                         + "\n" + "with Account Number: " + recieverCustomer.getAcctnum());
+         es.useDefaultProps();
+         
+       sendRecieverEmail(recieverEmailAddress, receiverAccountName, transferAmount, recieverNewBalance, recieverCustomer.getAcctnum());    
+        }
+      
+  }, "transfer Email send");
+  transferThread.start();
+  
+    }else if (senderInitBalance < transferAmount){
+          status = 0;
+          setMessage(status);
+        
+    }
+    }
+    
+    //this method sends email alert to the reciever
+    public void sendRecieverEmail(String emailID, String receiverAccountName, Double transferAmount, Double recieverNewBalance, String recieverAccountNumber){
+     //sender notification to reciever
+         es.setIds(emailID, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
+         es.setSubject("Credit Alert From We-Eat Bank Ltd");
+         es.setMessage("Credit Notification which occurred on: " + d
+                         + "\n" + "Account Name: " + receiverAccountName
+                          + "\n" + "Credited Amount: N" + transferAmount
+                         + "\n" + "Account Balance: N" + recieverNewBalance
+                           + "\n" + "Account Number: " + recieverAccountNumber);
+         es.useDefaultProps();     
     }
 
     @Override
     public void withdrawMoney(Customer customer, String pin, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
+     Query q = em.createNamedQuery("find customer by epin");
+     q.setParameter("epin", pin);
+    
+     Customer cu = (Customer) q.getSingleResult();
+ 
+    
+    String name = cu.getFirstname() + " " + cu.getMiddlename() +" " + cu.getLastname();
+    String emaili = cu.getEmail();
+    Double oldBalance = cu.getBalance();
+    
+    if (oldBalance <= amount){
+        statusMsg = "Invalid Amount, try Again";
+    }else{
+    Double newBalance = oldBalance - amount;
+    setBalance(oldBalance);
+    
+    em.merge(cu);
+    em.flush();
+    setNewBalance(cu.getBalance());
+       statusMsg = "Transcation Successful...";
+    setStatusMsg(statusMsg);
+    Date dd = new Date();
+    
+    Thread EmailSenderWithdrawAtm = new Thread(new Runnable(){
+        @Override
+        public void run() {
+          //send email
+         es.setIds(emaili, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
+         es.setSubject(" ATM Withdrawal debit Alert From We-Eat Bank Ltd");
+         es.setMessage("debit Notification which occurred on: " + dd
+                         + "\n" + "Account Name: " + name
+                          + "\n" + "Debited Amount: N" + amount
+                         + "\n" + "Account Balance: N" + newBalance);
+         es.useDefaultProps(); 
+        }
+        
+    }, "Thread for sending Email");
+    
+    EmailSenderWithdrawAtm.start();
+   
+    
+    
+    }
+    }
+    
+    public void setStatusMsg (String mssg){
+     statusMsg = mssg;   
+    }
+    
+    @Override
+    public String getStatusMsg(){
+        return statusMsg;
     }
 
     @Override
-    public void transferMoney(String pin, String senderAcct, String recieverAcct, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void transferMoney(Customer cus,String pin, String recieverAcct, double amount) {
+    int statuslib;
+        
+     Query q = em.createNamedQuery("find customer by epin");
+     q.setParameter("epin", pin);
+     Customer senderCustomer = (Customer) q.getSingleResult();
+     double senderInitBalance = senderCustomer.getBalance();
+     String senderEmailAddress = senderCustomer.getEmail();
+     String senderAccountName = senderCustomer.getFirstname() +" "+ senderCustomer.getMiddlename() +" "+ senderCustomer.getLastname();
+     String acctNumber = senderCustomer.getAcctnum();
+    
+    Query q1 = em.createNamedQuery("find customer by acctnum");
+    q1.setParameter("acctnum", recieverAcct); 
+    Customer recieverCustomer = (Customer) q1.getSingleResult();
+    double recieverInitBalance = recieverCustomer.getBalance();
+    String recieverEmailAddress = recieverCustomer.getEmail();
+    String receiverAccountName = recieverCustomer.getFirstname() +" "+ recieverCustomer.getMiddlename() +" "+ recieverCustomer.getLastname();
+    
+    
+if (senderInitBalance >= amount){
+
+  //deduct amount from sender's balance and merge  
+  double  senderNewBalance = senderInitBalance - amount;
+  Date d = new Date();
+  senderCustomer.setBalance(senderNewBalance);
+  em.merge(senderCustomer);
+  statusMsg = "Transfer Successfully...";
+  
+  setNewBalance(senderCustomer.getBalance());
+  em.flush(); 
+  
+  //add amount to reciever's balnce and merge
+  double recieverNewBalance = recieverInitBalance + amount;
+  recieverCustomer.setBalance(recieverNewBalance);
+  em.merge(recieverCustomer);
+  em.flush();
+ setStatusMsg(statusMsg);
+  
+//sending notification to sender
+
+Thread transferEmailThread = new Thread(new Runnable() {
+      @Override
+      public void run() {
+         es.setIds(senderEmailAddress, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
+         es.setSubject("debit Alert From We-Eat Bank Ltd");
+         es.setMessage("debit Notification which occurred on: " + d
+                         + "\n" + "Account Name: " + senderAccountName
+                          + "\n" + "Debited Amount: N" + amount
+                         + "\n" + "Account Balance: N" + senderNewBalance
+                           + "\n" + "Account Number: " + senderCustomer.getAcctnum()
+                             + "\n" + "Transfered to Account Name: " + receiverAccountName
+                         + "\n" + "with Account Number: " + recieverCustomer.getAcctnum());
+         es.useDefaultProps();
+         
+       sendRecieverEmail(recieverEmailAddress, receiverAccountName, amount, recieverNewBalance, recieverCustomer.getAcctnum());
+      }
+    
+}, "Transfer Email Thread");
+transferEmailThread.start();
+     
+    }else if (senderInitBalance < amount){
+         statusMsg = "Insufficent balance, try Again"; 
+         setStatusMsg(statusMsg);
+        
+        
+    }
     }
 
     @Override
@@ -264,6 +579,8 @@ public class CustomerSessionBean implements CustomerRemote {
 
     @Override
     public void sendEmail(Customer customer, String emailAd) {
+         
+        
         String to = emailAd;//"nkennannadi@gmail.com";
         
         //sender's email ID
@@ -271,7 +588,7 @@ public class CustomerSessionBean implements CustomerRemote {
         
         //login credentials
         final String username = "nnadiug@rocketmail.com";
-        final String password = "adaeze";
+        final String password = "123456789";
         
         //sending through yahoo mail
         String host = "smtp.mail.yahoo.com";
@@ -327,7 +644,7 @@ throw new RuntimeException(e);
 
     @Override
     public List<Customer> getAllCustomers() {
-       return em.createQuery("From customer").getResultList();
+       return em.createQuery("From Customer").getResultList();
     }
 
     @Override
@@ -375,28 +692,17 @@ throw new RuntimeException(e);
         return this.d;
     }
 
-    @Override
-    public BufferedImage getIM() {
-       return this.im;
-    }
+  
 
-   
-
-    @Override
-    public void byteToImage(byte[] b) {
-       BufferedImage bi = null;
-            s = javax.xml.bind.DatatypeConverter.printHexBinary(b);
-           
-    }
 
     @Override
     public String getStringIM() {
-       return s;
+       return myPicture;
     }
 
     @Override
     public void updateAcct(Customer customer, String acctnum, String fName, String mName, String lName, 
-            String acctType, String gender, String nationality, String address, String email, String phone, Date dod, File file) {
+            String acctType, String gender, String nationality, String address, String email, String phone, Date dod, String filename) {
         
          Query q = em.createNamedQuery("find customer by acctnum");
      q.setParameter("acctnum", acctnum);
@@ -414,17 +720,106 @@ throw new RuntimeException(e);
      customer.setEmail(email);
      customer.setPhone(phone);
      customer.setDod(dod);
-        customer.setImage(imageToByte(file));
+      customer.setImage(filename);
      
      
      
      em.merge(customer);
     
      em.flush();
-      
+     statusMsg = "Update is Successful";
+      this.setStatusMsg(statusMsg);
+    }
+
+    @Override
+    public void searchByAcct(String pin) {
+        Query q = em.createNamedQuery("find customer by epin");
+     q.setParameter("epin", pin);
+    
+     Customer cu = (Customer) q.getSingleResult();
+     setBalance(cu.getBalance());
+    }
+
+    @Override
+    public void retrievePin(String email) {
+        
+     Query q = em.createNamedQuery("find customer by email");
+     q.setParameter("email", email);
+    
+     Customer cu = (Customer) q.getSingleResult();
+     String firstname = cu.getFirstname();
+     String pin = cu.getEpin();
+     statusMsg = "Check Email for your pin";
+     setStatusMsg(statusMsg);
+     
+     Thread emailRetrievePin = new Thread (new Runnable() {
+             @Override
+             public void run() {
+                   es.setIds(email, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
+         es.setSubject("We-Eat Bank - Pin retrieve Request");
+         es.setMessage(firstname + " You requested for email retrivable on " + d + " . Below is your pin details: " +
+                  "\n" + " Please endeavour to change this pin for security reasons."  +     
+                 "\n" + "Pin: " + pin);
+         es.useDefaultProps();
+             }
+         
+     }, " Email Retrieve Pin");
+     emailRetrievePin.start();
+       
+    }
+
+    @Override
+    public void changePin(String oldPin, String newPin, String verifyPin) {
+     Query q = em.createNamedQuery("find customer by epin");
+     q.setParameter("epin", oldPin);
+    
+     Customer cu = (Customer) q.getSingleResult();
+ 
+    
+    String name = cu.getFirstname();
+    String emaili = cu.getEmail();
+    String pin = cu.getEpin();
+    if (pin.equalsIgnoreCase(newPin)){
+        statusMsg = "Pin not avaliable for security reasons";
+        setStatusMsg(statusMsg);
+    }else{
+    if (newPin.equals(verifyPin)){
+     //   Customer customer = new Customer();
+        cu.setEpin(newPin);
+        em.merge(cu);
+        statusMsg = "Pin Change is Successful";
+        setStatusMsg(statusMsg);
+        em.flush();
+        
+        Thread emailChangePin = new Thread (new Runnable() {
+             @Override
+             public void run() {
+                 Date ds = new Date();
+                   es.setIds(emaili, "nnadiug@rocketmail.com");
+         es.setLoginCredentials("nnadiug@rocketmail.com", "123456789");
+         es.setSubject("We-Eat Bank - Pin retrieve Request");
+         es.setMessage(name + " You requested for email change on " + ds + " . Below is your pin details: " +
+                  "\n" + " Please endeavour to change this pin for security reasons."  +     
+                 "\n" + "Pin: " + cu.getEpin());
+         es.useDefaultProps();
+             }
+         
+     }, " Email Retrieve Pin");
+     emailChangePin.start();
+    }else{
+        statusMsg = "Pins are not matching";
+        setStatusMsg(statusMsg);
     }
     
-    
+    }
+    }
+
+    @Override
+    public void byteToImage(byte[] b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+   
     
     
 }

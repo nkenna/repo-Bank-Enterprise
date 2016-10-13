@@ -22,10 +22,10 @@ import javax.ejb.Remote;
 public interface CustomerRemote {
     
     //Customer Care Unit
-    void CreateNewAcct(Customer customer, File fi, String s, String emailAdr);
+    void CreateNewAcct(Customer customer, String fi, String s, String emailAdr);
     void deleteAcct(Customer customer, String acctNnmber);
     void updateAcct(Customer customer, String acctnum, String fName, String mName, String lName, String acctType, String gender, String Nationality,
-            String address, String email, String phone, Date dod, File file);
+            String address, String email, String phone, Date dod, String filename);
     Customer acctDetails (Customer customer, String acctNumber);
     
     //Teller unit
@@ -35,7 +35,9 @@ public interface CustomerRemote {
     
     //ATM unit
     void withdrawMoney (Customer customer, String pin, double amount);
-    void transferMoney (String pin, String senderAcct, String recieverAcct, double amount);
+    void transferMoney (Customer cu, String pin, String recieverAcct, double amount);
+    void retrievePin(String email);
+    void changePin(String oldPin, String newPin, String verifyPin);
     
     //other methods
     String generateBVN();
@@ -46,8 +48,9 @@ public interface CustomerRemote {
     
     List <Customer> getAllCustomers();
     
-    byte[] imageToByte(File f);
+    
     void byteToImage(byte[] b);
+    double getBal();
     String getFirstN();
     String getMiddleN();
     String getLastN();
@@ -58,11 +61,14 @@ public interface CustomerRemote {
     String getEM();
     String getPH();
     Date getD();
-    BufferedImage getIM();
     String getStringIM();
+    String getMsg();
+    double getNewBalance();
+    String getStatusMsg();
     
     
     void searchByAcct(Customer customer, String acct);
+    void searchByAcct(String pin);
     
     
 }

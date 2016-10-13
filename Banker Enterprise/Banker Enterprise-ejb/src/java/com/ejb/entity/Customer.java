@@ -29,7 +29,10 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "data")
-@NamedQueries({@NamedQuery(query = "Select c from Customer c where c.acctnum = :acctnum", name = "find customer by acctnum"),
+@NamedQueries({
+    @NamedQuery(query = "Select c from Customer c where c.acctnum = :acctnum", name = "find customer by acctnum"),
+@NamedQuery(query = "Select c from Customer c where c.epin = :epin", name = "find customer by epin"),
+@NamedQuery(query = "Select c from Customer c where c.email = :email", name = "find customer by email")
 })
 
 public class Customer implements Serializable {
@@ -67,11 +70,11 @@ public class Customer implements Serializable {
     private String epin;
     
   
-    private int balance;
+    private double balance;
     
     private Date dod;
     
-    private byte[] image;
+    private String image;
     
     
 
@@ -191,11 +194,11 @@ public class Customer implements Serializable {
         this.epin = epin;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
     
@@ -207,11 +210,11 @@ public class Customer implements Serializable {
         this.dod = dod;
     }
     
-      public byte[] getImage() {
+      public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
    

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" prefHeight="700.0" prefWidth="800.0" styleClass="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="banker.enterprise.suite.SuiteFXMLController">
+    <stylesheets>
+        <URL value="@suitefxml.css" />
+    </stylesheets>
+   <children>
+      <MenuBar layoutX="2.0" layoutY="2.0" prefHeight="25.0" prefWidth="800.0" styleClass="menubar" stylesheets="@suitefxml.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu id="menufile" mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem id="Menuitem" mnemonicParsing="false" styleClass="An" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Button fx:id="customerCare" layoutX="337.0" layoutY="108.0" mnemonicParsing="false" onAction="#ccAction" prefHeight="50.0" prefWidth="180.0" text="Customer Care " AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="150.0" />
+      <Button fx:id="teller" layoutX="337.0" layoutY="200.0" mnemonicParsing="false" onAction="#tellerAction" prefHeight="50.0" prefWidth="180.0" text="Teller" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="300.0" />
+      <ImageView fx:id="imgView" fitHeight="375.0" fitWidth="255.0" layoutX="52.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="100.0" />
+      <Label alignment="CENTER" layoutX="425.0" layoutY="271.0" prefHeight="42.0" prefWidth="172.0" text="Number of Customers" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="450.0" />
+      <Label fx:id="numLabel" alignment="CENTER" layoutX="479.0" layoutY="510.0" prefHeight="63.0" prefWidth="72.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="510.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

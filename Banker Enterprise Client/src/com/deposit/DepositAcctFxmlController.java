@@ -55,7 +55,6 @@ public class DepositAcctFxmlController implements Initializable {
      private  Properties props;
  private   InitialContext ctx = null;
   private   CustomerRemote customerBean;
-    @FXML
     private ImageView imView;
 
     /**
@@ -117,7 +116,7 @@ public class DepositAcctFxmlController implements Initializable {
            e.getMessage();
        }
          Image im = SwingFXUtils.toFXImage(bi, null);
-        imView.setImage(im);
+     //   imView.setImage(im);
     }
 
     @FXML

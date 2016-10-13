@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="700.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../../banker/enterprise/suite/suitefxml.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.newacct.CreateNewFXMLController">
+   <children>
+      <MenuBar layoutX="7.0" layoutY="2.0" styleClass="menubar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label layoutX="55.0" layoutY="87.0" prefWidth="100.0" text="First Name" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="100.0" />
+      <Label layoutX="65.0" layoutY="97.0" prefWidth="100.0" text="Middle Name" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="150.0" />
+      <Label layoutX="75.0" layoutY="107.0" prefWidth="100.0" text="Last Name" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="200.0" />
+      <Label layoutX="85.0" layoutY="117.0" prefWidth="100.0" text="Date of Birth" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="250.0" />
+      <Label layoutX="95.0" layoutY="127.0" prefWidth="100.0" text="Sex" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="300.0" />
+      <Label layoutX="105.0" layoutY="137.0" prefWidth="100.0" text="Email " AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="350.0" />
+      <Label layoutX="115.0" layoutY="147.0" prefWidth="100.0" text="Country" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="400.0" />
+      <Label layoutX="125.0" layoutY="157.0" prefWidth="100.0" text="Address" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="450.0" />
+      <Label layoutX="135.0" layoutY="167.0" prefWidth="100.0" text="Account Type" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="550.0" />
+      <Label layoutX="145.0" layoutY="177.0" prefWidth="100.0" text="Image" AnchorPane.leftAnchor="110.0" AnchorPane.topAnchor="600.0" />
+      <TextField fx:id="firstname" layoutX="267.0" layoutY="98.0" prefHeight="25.0" prefWidth="296.0" AnchorPane.leftAnchor="267.0" />
+      <TextField fx:id="middlename" layoutX="267.0" layoutY="148.0" prefHeight="25.0" prefWidth="296.0" />
+      <TextField fx:id="lastname" layoutX="267.0" layoutY="198.0" prefHeight="25.0" prefWidth="296.0" />
+      <TextField fx:id="email" layoutX="267.0" layoutY="348.0" prefHeight="25.0" prefWidth="296.0" />
+      <TextField fx:id="country" layoutX="267.0" layoutY="398.0" prefHeight="25.0" prefWidth="296.0" />
+      <TextField fx:id="image" layoutX="272.0" layoutY="598.0" prefHeight="25.0" prefWidth="286.0" />
+      <DatePicker fx:id="dod" layoutX="267.0" layoutY="248.0" prefHeight="25.0" prefWidth="296.0" />
+      <CheckBox fx:id="malecheck" layoutX="267.0" layoutY="302.0" mnemonicParsing="false" onAction="#malecheckAct" styleClass="checkbox" text="Male" />
+      <CheckBox fx:id="femalecheck" layoutX="400.0" layoutY="302.0" mnemonicParsing="false" onAction="#femalecheckAct" styleClass="checkbox" text="Female" />
+      <TextArea fx:id="address" layoutX="267.0" layoutY="446.0" prefHeight="27.0" prefWidth="296.0" />
+      <CheckBox fx:id="savingcheck" layoutX="263.0" layoutY="554.0" mnemonicParsing="false" onAction="#savingcheckAct" styleClass="checkbox" text="Saving" />
+      <CheckBox fx:id="currentcheck" layoutX="370.0" layoutY="554.0" mnemonicParsing="false" onAction="#currentcheckAct" styleClass="checkbox" text="Current" />
+      <CheckBox fx:id="fixeddepositcheck" layoutX="471.0" layoutY="554.0" mnemonicParsing="false" onAction="#fixeddepositCheckAct" styleClass="checkbox" text="Fixed Deposit" />
+      <CheckBox fx:id="termscheck" layoutX="272.0" layoutY="648.0" mnemonicParsing="false" onAction="#termscheckAct" prefHeight="17.0" prefWidth="150.0" styleClass="checkbox" text="Terms and Conditions" />
+      <Button fx:id="saveBtn" layoutX="447.0" layoutY="644.0" mnemonicParsing="false" onAction="#saveBtnAct" prefHeight="27.0" prefWidth="111.0" text="Save" />
+      <Button fx:id="browsebtn" layoutX="597.0" layoutY="598.0" mnemonicParsing="false" onAction="#browseBtnAct" prefHeight="27.0" prefWidth="82.0" text="Browse" />
+      <Label layoutX="111.0" layoutY="497.0" prefWidth="100.0" text="Phone" />
+      <TextField fx:id="phone" layoutX="267.0" layoutY="494.0" prefHeight="25.0" prefWidth="296.0" />
+      <Label fx:id="statusLabel" layoutX="269.0" layoutY="56.0" prefHeight="19.0" prefWidth="296.0" />
+   </children>
+</AnchorPane>
