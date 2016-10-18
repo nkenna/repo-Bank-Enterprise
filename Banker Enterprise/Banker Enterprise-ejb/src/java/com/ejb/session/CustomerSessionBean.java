@@ -14,6 +14,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.imageio.ImageIO;
 import javax.mail.Message;
@@ -31,7 +35,10 @@ import javax.persistence.Query;
  *
  * @author STEINACOZ-PC
  */
+
 @Stateless
+@DeclareRoles({"tellerUnit","customerCareUnit","atmUnit"})
+//@DenyAll
 public class CustomerSessionBean implements CustomerRemote {
 
     public CustomerSessionBean() {
@@ -102,6 +109,7 @@ public class CustomerSessionBean implements CustomerRemote {
     
 
     @Override
+    @RolesAllowed("customerCareUnit")
     public void CreateNewAcct(Customer customer, String fi, String gender, String emailAdr) {
         String ge = null;
         
@@ -172,6 +180,7 @@ public class CustomerSessionBean implements CustomerRemote {
     }
 
     @Override
+    @RolesAllowed("customerCareUnit")
     public void deleteAcct(Customer customer, String acctNum) {
         
     Query q = em.createNamedQuery("find customer by acctnum");
@@ -185,6 +194,7 @@ public class CustomerSessionBean implements CustomerRemote {
     }
 
     @Override
+    @RolesAllowed({"atmUnit","tellerUnit","customerCareUnit"})
     public void searchByAcct(Customer cu,String acctNumber) {
      
      Query q = em.createNamedQuery("find customer by acctnum");
@@ -246,22 +256,26 @@ public class CustomerSessionBean implements CustomerRemote {
    
     
     @Override
+    @PermitAll
     public double getBal (){
         return balance;
     }
 
     
     @Override
+    @PermitAll
     public String getFirstN (){
         return firstN;
     }
 
     @Override
+    @PermitAll
     public Customer acctDetails(Customer customer, String acctNumber) {
      return customer;
     }
 
     @Override
+    @RolesAllowed("tellerUnit")
     public void depositMoney(String accountNumber, double amount) {
      int status = 0;
      
@@ -289,6 +303,7 @@ public class CustomerSessionBean implements CustomerRemote {
     }
     
     @Override
+    @PermitAll
     public double getNewBalance(){
         return balance;
     }
@@ -302,11 +317,13 @@ public class CustomerSessionBean implements CustomerRemote {
     }
     
     @Override
+    @PermitAll
     public String getMsg(){
         return Msg;
     }
 
     @Override
+    @RolesAllowed("tellerUnit")
     public void withdrawMoney(String accountNumber, double amount) {
        int status;
      
@@ -359,6 +376,7 @@ public class CustomerSessionBean implements CustomerRemote {
     }
 
     @Override
+    @RolesAllowed("tellerUnit")
     public void transferMoney(String senderAcct, String recieverAcct, double transferAmount) {
      int status;
      
@@ -426,6 +444,7 @@ public class CustomerSessionBean implements CustomerRemote {
     }
     
     //this method sends email alert to the reciever
+    
     public void sendRecieverEmail(String emailID, String receiverAccountName, Double transferAmount, Double recieverNewBalance, String recieverAccountNumber){
      //sender notification to reciever
          es.setIds(emailID, "nnadiug@rocketmail.com");
@@ -440,6 +459,7 @@ public class CustomerSessionBean implements CustomerRemote {
     }
 
     @Override
+    @RolesAllowed("atmUnit")
     public void withdrawMoney(Customer customer, String pin, double amount) {
        
      Query q = em.createNamedQuery("find customer by epin");
@@ -493,13 +513,15 @@ public class CustomerSessionBean implements CustomerRemote {
     }
     
     @Override
+    @PermitAll
     public String getStatusMsg(){
         return statusMsg;
     }
 
     @Override
+    @RolesAllowed("atmUnit")
     public void transferMoney(Customer cus,String pin, String recieverAcct, double amount) {
-    int statuslib;
+   
         
      Query q = em.createNamedQuery("find customer by epin");
      q.setParameter("epin", pin);
@@ -567,17 +589,12 @@ transferEmailThread.start();
     }
     }
 
-    @Override
-    public String generateBVN() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
+
+  
 
     @Override
-    public String generateAcctNumber(String sex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    @RolesAllowed("customerCareUnit")
     public void sendEmail(Customer customer, String emailAd) {
          
         
@@ -632,62 +649,64 @@ throw new RuntimeException(e);
     
     
 
-    @Override
-    public void sendEmail(String accountNumber, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
-    public void sendEmail(String senderAcct, String recieverAcct, double amount) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    @PermitAll
     public List<Customer> getAllCustomers() {
        return em.createQuery("From Customer").getResultList();
     }
 
     @Override
+    @PermitAll
     public String getMiddleN() {
         return this.middleN;
     }
 
     @Override
+    @PermitAll
     public String getLastN() {
         return this.lastN;
     }
 
     @Override
+    @PermitAll
     public String getTY() {
         return this.type;
     }
 
     @Override
+    @PermitAll
     public String getGender() {
        return this.sex;
     }
 
     @Override
+    @PermitAll
     public String getNA() {
         return this.ciizen;
     }
 
     @Override
+    @PermitAll
     public String getAD() {
         return this.addr;
     }
 
     @Override
+    @PermitAll
     public String getEM() {
         return this.email;
     }
 
     @Override
+    @PermitAll
     public String getPH() {
         return this.phone;
     }
 
     @Override
+    @PermitAll
     public Date getD() {
         return this.d;
     }
@@ -696,11 +715,13 @@ throw new RuntimeException(e);
 
 
     @Override
+    @PermitAll
     public String getStringIM() {
        return myPicture;
     }
 
     @Override
+    @RolesAllowed("customerCareUnit")
     public void updateAcct(Customer customer, String acctnum, String fName, String mName, String lName, 
             String acctType, String gender, String nationality, String address, String email, String phone, Date dod, String filename) {
         
@@ -732,6 +753,7 @@ throw new RuntimeException(e);
     }
 
     @Override
+    @RolesAllowed("atmUnit")
     public void searchByAcct(String pin) {
         Query q = em.createNamedQuery("find customer by epin");
      q.setParameter("epin", pin);
@@ -741,6 +763,7 @@ throw new RuntimeException(e);
     }
 
     @Override
+    @RolesAllowed("atmUnit")
     public void retrievePin(String email) {
         
      Query q = em.createNamedQuery("find customer by email");
@@ -770,6 +793,7 @@ throw new RuntimeException(e);
     }
 
     @Override
+    @RolesAllowed("atmUnit")
     public void changePin(String oldPin, String newPin, String verifyPin) {
      Query q = em.createNamedQuery("find customer by epin");
      q.setParameter("epin", oldPin);
@@ -815,10 +839,7 @@ throw new RuntimeException(e);
     }
     }
 
-    @Override
-    public void byteToImage(byte[] b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
    
     
     

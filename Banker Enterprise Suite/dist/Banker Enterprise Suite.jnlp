@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="lib/Banker_Enterprise-ejb.jar" size="53470" download="eager" />
+    <jar href="lib/Banker_Enterprise-ejb.jar" size="60214" download="eager" />
     <jar href="lib/jboss-client.jar" size="11272815" download="eager" />
     <jar href="lib/jpa.jar" size="48045" download="eager" />
   </resources>

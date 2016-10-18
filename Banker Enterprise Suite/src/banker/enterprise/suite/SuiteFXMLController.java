@@ -76,8 +76,8 @@ public class SuiteFXMLController implements Initializable {
             props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
             props.put(Context.PROVIDER_URL, "http-remoting://localhost:8050");
             props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-            props.put(Context.SECURITY_PRINCIPAL, "steinacoz");
-            props.put(Context.SECURITY_CREDENTIALS, "nkenna007");
+          props.put(Context.SECURITY_PRINCIPAL, "steinacoz");
+          props.put(Context.SECURITY_CREDENTIALS, "nkenna007");
             props.put("jboss.naming.client.ejb.context", true);
            
             ctx = new InitialContext(props);

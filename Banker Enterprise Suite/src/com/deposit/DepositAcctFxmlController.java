@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.embed.swing.SwingFXUtils;
@@ -23,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.imageio.ImageIO;
@@ -65,7 +67,31 @@ public class DepositAcctFxmlController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }  
+    
+     private String usernameDialog(){
+      String username = null;
+        TextInputDialog d = new TextInputDialog();
+        d.setTitle("Enter Username");
+        d.setHeaderText("Enter your username");
+        Optional<String> result = d.showAndWait();
+        if (result.isPresent()){
+            username = result.get();
+        }
+        return username;
+    }
+    
+     private String passwordDialog(){
+      String password = null;
+        TextInputDialog d = new TextInputDialog();
+        d.setTitle("Enter Username");
+        d.setHeaderText("Enter your password");
+        Optional<String> result = d.showAndWait();
+        if (result.isPresent()){
+            password = result.get();
+        }
+        return password;
+    }
 
     @FXML
     private void successAcctBox(ActionEvent event) {
@@ -77,13 +103,16 @@ public class DepositAcctFxmlController implements Initializable {
 
     @FXML
     private void searchActButton(ActionEvent event) {
-         try{
+        String user = usernameDialog();
+        String pass = passwordDialog(); 
+        
+        try{
             props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
             props.put(Context.PROVIDER_URL, "http-remoting://localhost:8050");
             props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-            props.put(Context.SECURITY_PRINCIPAL, "steinacoz");
-            props.put(Context.SECURITY_CREDENTIALS, "nkenna007");
+            props.put(Context.SECURITY_PRINCIPAL, user);
+            props.put(Context.SECURITY_CREDENTIALS, pass);
             props.put("jboss.naming.client.ejb.context", true);
            
             ctx = new InitialContext(props);
@@ -124,14 +153,16 @@ public class DepositAcctFxmlController implements Initializable {
 
     @FXML
     private void depositActButton(ActionEvent event) {
+        String user = usernameDialog();
+        String pass = passwordDialog();
         
            try{
             props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
             props.put(Context.PROVIDER_URL, "http-remoting://localhost:8050");
             props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-            props.put(Context.SECURITY_PRINCIPAL, "steinacoz");
-            props.put(Context.SECURITY_CREDENTIALS, "nkenna007");
+            props.put(Context.SECURITY_PRINCIPAL, user);
+            props.put(Context.SECURITY_CREDENTIALS, pass);
             props.put("jboss.naming.client.ejb.context", true);
            
             ctx = new InitialContext(props);

@@ -40,16 +40,15 @@ public interface CustomerRemote {
     void changePin(String oldPin, String newPin, String verifyPin);
     
     //other methods
-    String generateBVN();
-    String generateAcctNumber(String sex);
+   
+   
     void sendEmail (Customer customer, String emailAd); //new account, delete account, update account and acctDetails
-    void sendEmail (String accountNumber, double amount); //deposit and withdraw
-    void sendEmail (String senderAcct, String recieverAcct, double amount); //transfer
+  
     
     List <Customer> getAllCustomers();
     
     
-    void byteToImage(byte[] b);
+  
     double getBal();
     String getFirstN();
     String getMiddleN();
